@@ -5,7 +5,12 @@
     <style>
       :root {
         font-family: "Times New Roman", Times, serif;
+        --small: 9pt;
+        --x-small: 7pt;
         font-size: 11pt;
+        --large: 13pt;
+        --x-large: 17pt;
+        --xx-large: 21pt;
       }
       body {
         margin: 0;
@@ -145,7 +150,7 @@
         resize: none;
         box-sizing: border-box;
         border: none;
-        font-size: small;
+        font-size: var(--small);
       }
 
       .stats {
@@ -169,7 +174,7 @@
         text-align: center;
       }
       .stats input.mod {
-        font-size: x-large;
+        font-size: var(--x-large);
         border: solid 0.2mm black;
         border-radius: 0.5mm;
         box-sizing: border-box;
@@ -223,10 +228,10 @@
       .box input[type="text"] {
         text-align: center;
         border: none;
-        font-size: x-large;
+        font-size: var(--x-large);
       }
       .box input[type="text"]::placeholder {
-        font-size: x-small;
+        font-size: var(--x-small);
         vertical-align: bottom;
         color: black;
         opacity: 30%;
@@ -257,7 +262,7 @@
         resize: none;
         box-sizing: border-box;
         border: none;
-        font-size: small;
+        font-size: var(--small);
       }
 
       .notes {
@@ -659,7 +664,7 @@
                 <label for="input-hp">Хиты</label>
                 <div style="display: flex; flex-flow: row nowrap; align-items: center">
                   <input type="text" name="hp" id="input-hp" style="flex: 3; text-align: right" />
-                  <div style="font-size: x-large; font-weight: bolder">/</div>
+                  <div style="font-size: var(--x-large); font-weight: bolder">/</div>
                   <input type="text" name="max_hp" id="input-max_hp" style="flex: 1" />
                 </div>
               </div>
@@ -672,7 +677,7 @@
                     id="input-hit_die_count"
                     style="flex: 3; text-align: right"
                   />
-                  <div style="font-size: x-large">x</div>
+                  <div style="font-size: var(--x-large)">x</div>
                   <input type="text" name="hit_die" id="input-hit_die" style="flex: 1" />
                 </div>
               </div>
@@ -794,7 +799,7 @@
                   id="input-monk_ci"
                   style="flex: 2; text-align: right"
                 />
-                <label style="font-size: x-large">/</label>
+                <label style="font-size: var(--x-large)">/</label>
                 <input type="text" name="monk_ci_total" id="input-monk_ci_total" style="flex: 1" />
               </div>
             </div>
