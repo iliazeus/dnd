@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 11pt;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .page {
+        width: 210mm;
+        /* height: 148.5mm; */
+        height: 146mm;
+        padding: 5mm;
+        background: #fff;
+      }
+      @media screen {
+        body {
+          background: #eee;
+        }
+        .page {
+          margin: 5mm auto;
+          box-shadow: 0 0 2mm rgb(0 0 0 / 20%);
+        }
+      }
+      @media print {
+        .if-not-print {
+          display: none;
+        }
+        .page {
+          margin: 0;
+        }
+        .page:not(:first-child) {
+          border-top: solid 0.2mm black;
+        }
+        a,
+        a:visited {
+          color: inherit;
+        }
+      }
+
+      .toolbar {
+        position: fixed;
+        top: 2mm;
+        left: 2mm;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        background: white;
+        padding: 2mm;
+      }
+      .toolbar button {
+        margin-top: 1mm;
+        margin-bottom: 1mm;
+      }
+
+      summary {
+        cursor: pointer;
+      }
+
+      input[type="text"] {
+        border: none;
+        border-bottom: solid 0.2mm #000;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      hr {
+        border: none;
+        border-bottom: solid 0.2mm #888;
+      }
+
+      fieldset {
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+        margin-top: 0;
+      }
+      fieldset legend {
+        font-weight: bolder;
+        font-size: smaller;
+      }
+
+      img.qr {
+        image-rendering: pixelated;
+      }
+
+      .sidebar {
+        width: 90mm;
+        margin-right: 2mm;
+        padding-right: 2mm;
+      }
+      .sidebar > * {
+        width: 100%;
+      }
+
+      .main {
+        width: 100%;
+        margin-top: auto;
+        margin-bottom: 1mm; /**/
+      }
+
+      .name-section input {
+        font-size: larger;
+      }
+
+      img.portrait {
+        aspect-ratio: auto 1/1;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+        background: #eee;
+      }
+
+      .basics {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: start;
+      }
+      .basics label {
+        font-size: smaller;
+        font-weight: bolder;
+        width: 100%;
+      }
+
+      .feats {
+        margin-top: 2mm;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+      }
+      .feats label {
+        display: block;
+        text-align: center;
+        width: 100%;
+        font-size: smaller;
+        font-weight: bolder;
+      }
+      .feats textarea {
+        width: 100%;
+        height: 30mm;
+        resize: none;
+        box-sizing: border-box;
+        border: none;
+        font-size: small;
+      }
+
+      .stats {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+      }
+      .stats > div {
+        width: 20mm;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+      }
+      .stats label {
+        font-size: larger;
+        font-weight: bolder;
+      }
+      .stats input {
+        margin-top: 1mm;
+        margin-bottom: 1mm;
+        text-align: center;
+      }
+      .stats input.mod {
+        font-size: x-large;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+      }
+
+      .saves {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-around;
+      }
+      .saves > * {
+        margin-left: 2mm;
+        margin-right: 2mm;
+      }
+      .saves input[type="text"] {
+        width: 12mm;
+      }
+
+      .skills {
+        columns: 2;
+      }
+
+      .skills input[type="text"] {
+        width: 8mm;
+        text-align: right;
+      }
+      .skills label span.stat {
+        opacity: 50%;
+      }
+
+      .boxes {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: start;
+      }
+
+      .box {
+        margin: 1mm;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        width: 20mm;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+      }
+      .box label {
+        font-weight: bolder;
+        font-size: smaller;
+      }
+      .box input[type="text"] {
+        text-align: center;
+        border: none;
+        font-size: x-large;
+      }
+      .box input[type="text"]::placeholder {
+        font-size: x-small;
+        vertical-align: bottom;
+        color: black;
+        opacity: 30%;
+      }
+      .box.big {
+        width: 42mm;
+      }
+      .box.med {
+        width: 32mm;
+      }
+
+      .extra-prof {
+        width: 54mm;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+        margin: 1mm;
+      }
+      .extra-prof label {
+        display: block;
+        text-align: center;
+        font-weight: bolder;
+        font-size: smaller;
+      }
+      .extra-prof textarea {
+        width: 100%;
+        height: 36mm;
+        resize: none;
+        box-sizing: border-box;
+        border: none;
+        font-size: small;
+      }
+
+      .notes {
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        box-sizing: border-box;
+        padding-left: 0;
+        padding-right: 0;
+        height: 45mm;
+      }
+      .notes legend {
+        margin-left: 2mm;
+        font-weight: bolder;
+      }
+      .notes textarea {
+        border: none;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        resize: none;
+      }
+
+      .rules-page {
+        columns: 3;
+        column-gap: 5mm;
+        column-fill: auto;
+      }
+      .rules {
+        font-size: smaller;
+      }
+      .rules section:not(:first-of-type) {
+        margin-top: 2mm;
+      }
+      .rules section > :first-child {
+        margin-top: 0;
+      }
+      .rules p,
+      .rules h3 {
+        margin-top: 1mm;
+        margin-bottom: 1mm;
+      }
+      .rules em {
+        font-weight: bolder;
+      }
+
+      .rules h3 input[type="checkbox"].long-rest {
+        margin: 0 1mm 0 1mm;
+        padding: 0.2mm;
+      }
+      .rules h3 input[type="checkbox"].long-rest {
+        appearance: none;
+        width: 5.5mm;
+        font-weight: bolder;
+        opacity: 30%;
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+      }
+      .rules h3 input[type="checkbox"].long-rest::before {
+        content: "LR";
+      }
+      .rules h3 input[type="checkbox"].long-rest:checked {
+        opacity: 100%;
+      }
+
+      .rules h3 span.badge {
+        border: solid 0.2mm black;
+        border-radius: 0.5mm;
+        font-weight: bolder;
+        padding: 0.2mm;
+      }
+
+      .notes-page {
+        columns: 3;
+        column-fill: auto;
+        column-gap: 5mm;
+        column-rule: solid 1px #ccc;
+      }
+      .notes-page textarea {
+        display: block;
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: none;
+      }
+    </style>
+
+    <style id="style-if-js">
+      .if-js {
+        display: none;
+      }
+    </style>
+    <script>
+      document.getElementById("style-if-js").remove();
+    </script>
+  </head>
+  <body>
+    <div class="if-js if-not-print toolbar">
+      <details open>
+        <summary>Tools</summary>
+        <div>
+          <button id="button-save-data">Save data</button>
+          <button id="button-load-data">Load data</button>
+          <button id="button-reset-form">Reset form</button>
+        </div>
+        <div>
+          <button id="button-set-portrait">Set portrait</button>
+        </div>
+      </details>
+      <script>
+        window.addEventListener("load", () => {
+          let form = document.querySelector("form#character-sheet");
+
+          let saveBtn = document.querySelector("button#button-save-data");
+          let loadBtn = document.querySelector("button#button-load-data");
+          let resetBtn = document.querySelector("button#button-reset-form");
+          let setPortraitBtn = document.querySelector("button#button-set-portrait");
+
+          document.querySelector("img.portrait").src = form.elements["portrait"].value;
+
+          saveBtn.addEventListener("click", () => {
+            let data = Object.fromEntries(new FormData(form));
+
+            {
+              // move to bottom of JSON for easier debug
+              let { portrait, ...rest } = data;
+              data = rest;
+              data.portrait = portrait;
+            }
+
+            let a = document.createElement("a");
+            a.download = "character.json";
+            a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)]));
+            a.click();
+            URL.revokeObjectURL(a.href);
+            a.remove();
+          });
+
+          loadBtn.addEventListener("click", () => {
+            let inp = document.createElement("input");
+            inp.type = "file";
+            inp.accept = "application/json";
+
+            inp.addEventListener("change", async () => {
+              let file = inp.files[0];
+              inp.remove();
+
+              if (!file) return;
+
+              let data = JSON.parse(await file.text());
+              for (let [key, val] of Object.entries(data)) {
+                let el = form.elements[key];
+                if (el.type === "checkbox") el.checked = !!val;
+                else el.value = val;
+              }
+
+              if (data.portrait) {
+                document.querySelector("img.portrait").src = data.portrait;
+              }
+            });
+
+            inp.click();
+          });
+
+          resetBtn.addEventListener("click", () => {
+            form.reset();
+            form.elements["portrait"].value = "";
+            document.querySelector("img.portrait").removeAttribute("src");
+          });
+
+          setPortraitBtn.addEventListener("click", () => {
+            let inp = document.createElement("input");
+            inp.type = "file";
+            inp.accept = "image/*";
+
+            inp.addEventListener("change", async () => {
+              let file = inp.files[0];
+              inp.remove();
+
+              if (!file) return;
+
+              let data = new Uint8Array(await file.arrayBuffer());
+              let url = "data:" + file.type + ";base64," + btoa(String.fromCharCode(...data));
+
+              form.elements["portrait"].value = url;
+              document.querySelector("img.portrait").src = url;
+            });
+
+            inp.click();
+          });
+        });
+      </script>
+    </div>
+    <form id="character-sheet">
+      <div class="page" style="display: flex; flex-flow: row nowrap">
+        <div class="sidebar">
+          <table class="name-section">
+            <tr>
+              <th><label for="input-name">Имя:</label></th>
+              <td><input type="text" name="name" id="input-name" /></td>
+            </tr>
+          </table>
+          <img class="portrait" src="portrait.png" />
+          <input type="hidden" name="portrait" />
+          <div class="basics">
+            <label for="input-species">Вид:</label>
+            <input type="text" name="species" id="input-species" />
+            <label for="input-background">Происхождение:</label>
+            <input type="text" name="background" id="input-background" />
+            <label for="input-class">Класс:</label>
+            <input type="text" name="class" id="input-class" />
+            <label for="input-subclass">Подкласс:</label>
+            <input type="text" name="subclass" id="input-subclass" />
+          </div>
+          <div class="feats">
+            <label for="input-feats">Черты</label>
+            <textarea name="feats" id="input-feats"></textarea>
+          </div>
+        </div>
+        <div class="main">
+          <div class="stats">
+            <div>
+              <label for="input-str">STR</label>
+              <input class="stat" type="text" name="str" id="input-str" />
+              <input class="mod" type="text" name="str_mod" id="input-str_mod" />
+            </div>
+            <div>
+              <label for="input-dex">DEX</label>
+              <input class="stat" type="text" name="dex" id="input-dex" />
+              <input class="mod" type="text" name="dex_mod" id="input-dex_mod" />
+            </div>
+            <div>
+              <label for="input-con">CON</label>
+              <input class="stat" type="text" name="con" id="input-con" />
+              <input class="mod" type="text" name="con_mod" id="input-con_mod" />
+            </div>
+            <div>
+              <label for="input-int">INT</label>
+              <input class="stat" type="text" name="int" id="input-int" />
+              <input class="mod" type="text" name="int_mod" id="input-int_mod" />
+            </div>
+            <div>
+              <label for="input-wis">WIS</label>
+              <input class="stat" type="text" name="wis" id="input-wis" />
+              <input class="mod" type="text" name="wis_mod" id="input-wis_mod" />
+            </div>
+            <div>
+              <label for="input-cha">CHA</label>
+              <input class="stat" type="text" name="cha" id="input-cha" />
+              <input class="mod" type="text" name="cha_mod" id="input-cha_mod" />
+            </div>
+          </div>
+          <div class="saves">
+            <div>
+              <input type="checkbox" name="str_save_prof" id="input-str_save_prof" />
+              <input type="text" name="str_save" id="input-str_save" />
+            </div>
+            <div>
+              <input type="checkbox" name="dex_save_prof" id="input-dex_save_prof" />
+              <input type="text" name="dex_save" id="input-dex_save" />
+            </div>
+            <div>
+              <input type="checkbox" name="con_save_prof" id="input-con_save_prof" />
+              <input type="text" name="con_save" id="input-con_save" />
+            </div>
+            <div>
+              <input type="checkbox" name="int_save_prof" id="input-int_save_prof" />
+              <input type="text" name="int_save" id="input-int_save" />
+            </div>
+            <div>
+              <input type="checkbox" name="wis_save_prof" id="input-wis_save_prof" />
+              <input type="text" name="wis_save" id="input-wis_save" />
+            </div>
+            <div>
+              <input type="checkbox" name="cha_save_prof" id="input-cha_save_prof" />
+              <input type="text" name="cha_save" id="input-cha_save" />
+            </div>
+          </div>
+          <hr />
+          <div class="skills">
+            <div>
+              <input type="checkbox" name="acrobatics_prof" id="input-acrobatics_prof" />
+              <input type="text" name="acrobatics" id="input-acrobatics" />
+              <label for="input-acrobatics">Акробатика <span class="stat">(DEX)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="investigation_prof" id="input-investigation_prof" />
+              <input type="text" name="investigation" id="input-investigation" />
+              <label for="input-investigation">Анализ <span class="stat">(INT)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="athletics_prof" id="input-athletics_prof" />
+              <input type="text" name="athletics" id="input-athletics" />
+              <label for="input-athletics">Атлетика <span class="stat">(STR)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="perception_prof" id="input-perception_prof" />
+              <input type="text" name="perception" id="input-perception" />
+              <label for="input-perception">Внимательность <span class="stat">(WIS)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="survival_prof" id="input-survival_prof" />
+              <input type="text" name="survival" id="input-survival" />
+              <label for="input-survival">Выживание <span class="stat">(WIS)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="performance_prof" id="input-performance_prof" />
+              <input type="text" name="performance" id="input-performance" />
+              <label for="input-performance">Выступление <span class="stat">(CHA)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="intimidation_prof" id="input-intimidation_prof" />
+              <input type="text" name="intimidation" id="input-intimidation" />
+              <label for="input-intimidation">Запугивание <span class="stat">(CHA)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="history_prof" id="input-history_prof" />
+              <input type="text" name="history" id="input-history" />
+              <label for="input-history">История <span class="stat">(INT)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="sleight_of_hand_prof" id="input-sleight_of_hand_prof" />
+              <input type="text" name="sleight_of_hand" id="input-sleight_of_hand" />
+              <label for="input-sleight_of_hand"
+                >Ловкость рук <span class="stat">(DEX)</span></label
+              >
+            </div>
+            <div>
+              <input type="checkbox" name="arcana_prof" id="input-arcana_prof" />
+              <input type="text" name="arcana" id="input-arcana" />
+              <label for="input-arcana">Магия <span class="stat">(INT)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="medicine_prof" id="input-medicine_prof" />
+              <input type="text" name="medicine" id="input-medicine" />
+              <label for="input-medicine">Медицина <span class="stat">(WIS)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="deception_prof" id="input-deception_prof" />
+              <input type="text" name="deception" id="input-deception" />
+              <label for="input-deception">Обман <span class="stat">(CHA)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="nature_prof" id="input-nature_prof" />
+              <input type="text" name="nature" id="input-nature" />
+              <label for="input-nature">Природа <span class="stat">(INT)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="insight_prof" id="input-insight_prof" />
+              <input type="text" name="insight" id="input-insight" />
+              <label for="input-insight">Проницательность <span class="stat">(WIS)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="religion_prof" id="input-religion_prof" />
+              <input type="text" name="religion" id="input-religion" />
+              <label for="input-religion">Религия <span class="stat">(INT)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="stealth_prof" id="input-stealth_prof" />
+              <input type="text" name="stealth" id="input-stealth" />
+              <label for="input-stealth">Скрытность <span class="stat">(DEX)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="persuasion_prof" id="input-persuasion_prof" />
+              <input type="text" name="persuasion" id="input-persuasion" />
+              <label for="input-persuasion">Убеждение <span class="stat">(CHA)</span></label>
+            </div>
+            <div>
+              <input type="checkbox" name="animal_handling_prof" id="input-animal_handling_prof" />
+              <input type="text" name="animal_handling" id="input-animal_handling" />
+              <label for="input-animal_handling">
+                Уход за животными <span class="stat">(WIS)</span>
+              </label>
+            </div>
+          </div>
+          <hr />
+          <div style="display: flex; flex-flow: row nowrap; justify-content: stretch">
+            <div class="extra-prof">
+              <label for="input-extra_prof">Владения</label>
+              <textarea name="extra_prof" id="input-extra_prof"></textarea>
+            </div>
+            <div style="flex: 1" class="boxes">
+              <div class="box">
+                <label for="input-initiative">Иниц.</label>
+                <input type="text" name="initiative" id="input-initiative" />
+              </div>
+              <div class="box">
+                <label for="input-passive_perception">Пасс. вн.</label>
+                <input type="text" name="passive_perception" id="input-passive_perception" />
+              </div>
+              <div class="box">
+                <label for="input-prof_bonus">Бонус м-ва</label>
+                <input type="text" name="prof_bonus" id="input-prof_bonux" />
+              </div>
+              <div class="box">
+                <label for="input-inspiration">Вдохн-ие</label>
+                <input type="text" name="inspiration" id="input-inspiration" />
+              </div>
+              <div class="box big">
+                <label for="input-hp">Хиты</label>
+                <div style="display: flex; flex-flow: row nowrap; align-items: center">
+                  <input type="text" name="hp" id="input-hp" style="flex: 3; text-align: right" />
+                  <div style="font-size: x-large; font-weight: bolder">/</div>
+                  <input type="text" name="max_hp" id="input-max_hp" style="flex: 1" />
+                </div>
+              </div>
+              <div class="box big">
+                <label for="input-hit_die_count">Кости хитов</label>
+                <div style="display: flex; flex-flow: row nowrap">
+                  <input
+                    type="text"
+                    name="hit_die_count"
+                    id="input-hit_die_count"
+                    style="flex: 3; text-align: right"
+                  />
+                  <div style="font-size: x-large">x</div>
+                  <input type="text" name="hit_die" id="input-hit_die" style="flex: 1" />
+                </div>
+              </div>
+              <div class="box">
+                <label for="input-speed">Скорость</label>
+                <input type="text" name="speed" id="input-speed" />
+              </div>
+              <div class="box">
+                <label for="input-ac">AC</label>
+                <input type="text" name="ac" id="input-ac" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page rules-page">
+        <div style="text-align: center">
+          <table class="name-section" style="width: 100%">
+            <tr>
+              <th><label for="input-monk_name">Имя:</label></th>
+              <td><input type="text" name="monk_name" id="input-monk_name" /></td>
+            </tr>
+          </table>
+          <h3 style="margin: 0">Монах Открытой руки</h3>
+          <div class="boxes" style="justify-content: center">
+            <div class="box">
+              <label for="input-monk_level">Уровень</label>
+              <input type="text" name="monk_level" id="input-monk_level" />
+            </div>
+            <div class="box">
+              <label for="input-monk_ma_die">Кость Б/И</label>
+              <input type="text" name="monk_ma_die" id="input-monk_ma_die" />
+            </div>
+            <div class="box">
+              <label for="input-monk_unarmored_movement">+ к Скор.</label>
+              <input
+                type="text"
+                name="monk_unarmored_movement"
+                id="input-monk_unarmored_movement"
+              />
+            </div>
+          </div>
+          <p style="margin: 0">
+            <a target="_blank" href="https://next.dnd.su/class/monk/open-hand">
+              next.dnd.su/class/monk/open-hand
+            </a>
+          </p>
+          <img
+            class="qr"
+            style="width: 70%"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhAQAAAAB/n//CAAAAk0lEQVR42mP4DwQNDJjkB6k97A0M3y+zfm9g+BIZKw4kQ1hBZNxWIPn96lGg+AfREHag+t/3QepdmNY3MPx4ZdTfwPDrJKs6UHzTqfQGhr9cnO4NDF/tNv8Hkt6dy4Hk6gf7geZEC/AD1XxYHg/UK2wKsut2eDlQPHwByJaArfVAMrRvO1D80uFyoBohKaAaHK4FAPqyaasbYsghAAAAAElFTkSuQmCC"
+          />
+        </div>
+        <div class="rules" style="height: 100%">
+          <section>
+            <h3>Безоружный удар <span class="badge">АТК</span> <span class="badge">БД</span></h3>
+            <div class="box" style="float: left">
+              <label for="input-monk_unarmed_strike_attack_mod">Мод. атаки</label>
+              <input
+                type="text"
+                name="monk_unarmed_strike_attack_mod"
+                id="input-monk_unarmed_strike_attack_mod"
+                placeholder="mSTR + БВ"
+              />
+            </div>
+            <div class="box med" style="float: left; clear: left">
+              <label for="input-monk_unarmed_strike_damage">Урон атаки</label>
+              <div style="display: flex; flex-flow: row nowrap; align-items: center">
+                <input
+                  type="text"
+                  name="monk_unarmed_strike_damage"
+                  id="input-monk_unarmed_strike_damage"
+                  placeholder="1+mSTR"
+                />
+                <label>ИЛИ</label>
+                <input
+                  type="text"
+                  name="monk_unarmed_strike_damage_ma_die"
+                  id="input-monk_unarmed_strike_damage_ma_die"
+                  placeholder="dБИ"
+                />
+              </div>
+            </div>
+            <p>
+              <em>Урон.</em> Бросок атаки по цели; mod = mSTR + БВ. При попадании цель получает
+              Дробящий урон, равный 1 + mSTR.
+            </p>
+            <p>
+              <em>Захват.</em> Цель должна преуспеть спасбросок STR или DEX (на выбор цели), иначе
+              получит состояние Схваченный. Сл этого спасброска и попыток освобождения от захвата
+              равна 8 + mSTR + БВ. Захватывать таким образом можно только существа, чей размер
+              больше вашего максимум на одну категорию, и только если у вас есть свободная рука для
+              захвата.
+            </p>
+            <div class="box" style="float: right">
+              <label for="input-monk_unarmed_strike_save_diff">Сл. спасброска</label>
+              <input
+                type="text"
+                name="monk_unarmed_strike_save_diff"
+                id="input-monk_unarmed_strike_save_diff"
+                placeholder="8+mSTR+БВ"
+              />
+            </div>
+            <p>
+              <em>Толчок.</em> Цель должна совершить спасбросок STR или DEX (на выбор цели). При
+              провале вы толкаете цель на 5 фт от себя или причиняете ей состояние Опрокинутый. Сл
+              этого спасброска равна 8 + mSTR + БВ. Толкать таким образом можно только существа, чей
+              размер больше вашего максимум на одну категорию.
+            </p>
+          </section>
+          <section>
+            <h3>Монашеская сосредоточенность</h3>
+            <div class="box med" style="float: left">
+              <label for="input-monk_ci">Ци</label>
+              <div style="display: flex; flex-flow: row nowrap">
+                <input
+                  type="text"
+                  name="monk_ci"
+                  id="input-monk_ci"
+                  style="flex: 2; text-align: right"
+                />
+                <label style="font-size: x-large">/</label>
+                <input type="text" name="monk_ci_total" id="input-monk_ci_total" style="flex: 1" />
+              </div>
+            </div>
+            <div class="box" style="float: left">
+              <label for="input-monk_ci_save_diff">Сл. спасброска</label>
+              <input
+                type="text"
+                name="monk_ci_save_diff"
+                id="input-monk_ci_save_diff"
+                placeholder="8+mWIS+БВ"
+              />
+            </div>
+            <p>
+              <em>Поступь ветра.</em> Бонусным действием вы можете совершать действие Рывок. Вы
+              можете также потратить <b>1 Ци</b>, чтобы Бонусным действием совершить действия Отход
+              и Рывок; в таком случае дальность ваших прыжков в этом ходу удваивается.
+            </p>
+            <p>
+              <em>Терпеливая защита.</em> Бонусным действием вы можете совершать действие Отход. Вы
+              можете также потратить <b>1 Ци</b>, чтобы Бонусным действием совершить действия Отход
+              и Уклонение.
+            </p>
+            <p>
+              <em>Шквал ударов.</em> Вы можете потратить <b>1 Ци</b>, чтобы БД совершить два
+              Безоружных удара.
+            </p>
+          </section>
+          <section style="margin-bottom: 8mm">
+            <h3>Феноменальный метаболизм <input type="checkbox" class="long-rest" /></h3>
+            <div class="box med" style="float: right">
+              <label for="input-monk_uncanny_metabolism_heal">Хиты</label>
+              <div style="display: flex; flex-flow: row nowrap; align-items: center">
+                <label style="white-space: nowrap; margin-left: 1mm; font-size: larger">
+                  dБИ +
+                </label>
+                <input
+                  type="text"
+                  name="monk_uncanny_metabolism_heal"
+                  id="input-monk_uncanny_metabolism_heal"
+                  placeholder="lvlMonk"
+                  style="text-align: left"
+                />
+              </div>
+            </div>
+            <p>
+              Когда вы совершаете бросок Инициативы, можете восполнить все потраченные
+              <strong>Ци</strong>. Если вы делаете это, восстановите хиты на значение dБИ + lvlMonk.
+            </p>
+          </section>
+          <section>
+            <h3>Отражение атак <span class="badge">РЕ</span></h3>
+            <div class="box med" style="float: left">
+              <label for="input-monk_deflect_attacks_dmg_reduction">Сниж. урона</label>
+              <div style="display: flex; flex-flow: row nowrap; align-items: center">
+                <label style="white-space: nowrap; margin-left: 1mm; font-size: larger">
+                  1d10 +
+                </label>
+                <input
+                  type="text"
+                  name="monk_deflect_attacks_dmg_reduction"
+                  id="input-monk_deflect_attacks_dmg_reduction"
+                  placeholder="mDEX+lvlMonk"
+                  style="text-align: left"
+                />
+              </div>
+            </div>
+            <p>
+              Когда по вам попадают броском атаки, и в урон этой атаки включён Дробящий, Колющий или
+              Рубящий, вы можете Реакцией уменьшить урон этой атаки. Урон снижается на 1d10 + mDEX +
+              lvlMonk.
+            </p>
+            <div class="box" style="float: right">
+              <label for="input-monk_deflect_attacks_dmg">Урон</label>
+              <input
+                type="text"
+                name="monk_deflect_attacks_dmg"
+                id="input-monk_deflect_attacks_dmg"
+                placeholder="2dБИ + mDEX"
+              />
+            </div>
+            <p>
+              Если урон снижен до 0, вы можете потратить <b>1 Ци</b> и перенаправить часть мощи
+              атаки. Если вы делаете это, выберите видимое вами в пределах 5 фт от вас существо,
+              если атака была рукопашной; если атака была дальнобойной, выберите видимое вами в
+              пределах 60 фт от вас существо, не находящееся за Полным укрытием. Выбранное существо
+              должно преуспеть в спасброске Ловкости, иначе получит урон того же типа, что наносила
+              атака, равный 2dБИ + mDEX.
+            </p>
+          </section>
+          <section>
+            <h3>Техники открытой ладони</h3>
+            <p>
+              Всякий раз, когда вы попадаете по существу атакой, дарованной <b>Шквалом ударов</b>,
+              можете применить к цели один из следующих эффектов:
+            </p>
+            <p>
+              <em>Запутать.</em> Цель не может совершать Провоцированные атаки до начала своего
+              следующего хода.
+            </p>
+            <p>
+              <em>Толкнуть.</em> Вы можете толкнуть цель на расстояние до 15 футов от себя, если она
+              не преуспеет в спасброске Силы.
+            </p>
+            <p>
+              <em>Опрокинуть.</em> Цель получает состояние Опрокинутый, если не преуспеет в
+              спасброске Ловкости.
+            </p>
+          </section>
+        </div>
+      </div>
+      <div class="page notes-page">
+        <table class="name-section" style="width: 100%">
+          <tr>
+            <th><label for="input-notes_name">Имя:</label></th>
+            <td><input type="text" name="notes_name" id="input-notes_name" /></td>
+          </tr>
+        </table>
+        <textarea name="notes_1" style="height: 90%; margin-top: 5.2mm"></textarea>
+        <textarea name="notes_2"></textarea>
+        <textarea name="notes_3"></textarea>
+      </div>
+      <div class="page notes-page">
+        <table class="name-section" style="width: 100%">
+          <tr>
+            <th><label for="input-notes2_name">Имя:</label></th>
+            <td><input type="text" name="notes2_name" id="input-notes2_name" /></td>
+          </tr>
+        </table>
+        <textarea name="notes_4" style="height: 90%; margin-top: 5.2mm"></textarea>
+        <textarea name="notes_5"></textarea>
+        <textarea name="notes_6"></textarea>
+      </div>
+    </form>
+  </body>
+</html>
