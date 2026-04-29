@@ -85,18 +85,34 @@
     </style>
 
     <script>
-        window.addEventListener("load", () => {
+        window.addEventListener("load", async () => {
             let url = new URL(window.location);
             let form = document.querySelector("form");
 
-            for (let [k, v] of url.searchParams) form.elements[k].value = v;
+            let data = url.searchParams.get("d");
+            if (data != null) {
+                data = Uint8Array.fromBase64(data, { alphabet: "base64url" });
+                data = new Response(data).body;
+                data = data.pipeThrough(new DecompressionStream("deflate-raw"));
+                data = await new Response(data).text();
+                data = new URLSearchParams(data);
+                for (let [k, v] of data) {
+                    form.elements[k].value = v;
+                }
+            }
 
-            form.addEventListener("change", () => {
+            form.addEventListener("change", async () => {
+                let data = new URLSearchParams(new FormData(form)).toString();
+                data = new Response(data).body;
+                data = data.pipeThrough(new CompressionStream("deflate-raw"));
+                data = await new Response(data).bytes();
+                data = data.toBase64({ alphabet: "base64url" });
+
                 let newUrl = new URL(url);
-                newUrl.search = new URLSearchParams(new FormData(form));
+                newUrl.search = "?d=" + data;
                 window.history.replaceState(null, "", newUrl);
             });
-        });
+        }, { once: true });
     </script>
 </head>
 
