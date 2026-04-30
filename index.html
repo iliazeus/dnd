@@ -23,7 +23,7 @@
             width: 210mm;
             height: 297mm;
             margin: 0 auto;
-            padding: 5mm;
+            padding: 3mm;
             box-sizing: border-box;
         }
 
@@ -40,6 +40,14 @@
             flex-flow: column nowrap;
             align-items: stretch;
             justify-content: stretch;
+        }
+
+        .column .colspan {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: start;
+            gap: 15px;
+            margin: auto 2.5%;
         }
 
         label {
@@ -59,8 +67,8 @@
         }
 
         .box {
-            margin: 5px;
-            padding: 5px;
+            margin: 3px;
+            padding: 3px;
             border: solid 1px black;
             border-radius: 3px;
         }
@@ -70,11 +78,11 @@
             flex-flow: column nowrap;
         }
 
-        .box-lines>* {
+        .box-lines label {
             display: flex;
             flex-flow: column-reverse nowrap;
             font-size: 10pt;
-            width: 98%;
+            width: 95%;
             margin: 0 auto;
         }
 
@@ -237,6 +245,9 @@
                 <label>Подкласс <input name="subclass" /></label>
             </div>
             <div class="box box-skills">
+                <label><input name="proficiency_bonus" /> Бонус мастерства</label>
+            </div>
+            <div class="box box-skills">
                 <label><input name="acrobatics" /> Акробатика <small>(Dex)</small></label>
                 <label><input name="athletics" /> Атлетика <small>(Str)</small></label>
                 <label><input name="perception" /> Внимательность <small>(Wis)</small></label>
@@ -263,9 +274,10 @@
 
         <div class="column">
             <div class="box box-lines">
-                <label>Уровень <input name="level" /></label>
-                <label>Опыт <input name="xp" /></label>
-                <label>Бонус мастерства <input name="proficiency_bonus" /></label>
+                <div class="colspan">
+                    <label style="flex: 1">Уровень <input name="level" size="1" /></label>
+                    <label style="flex: 2">Опыт <input name="xp" size="1" /></label>
+                </div>
             </div>
             <div class="box box-lines">
                 <label>Сила (Str) <input name="str" /></label>
@@ -283,21 +295,25 @@
         <div class="column">
             <div class="box box-lines">
                 <label>Текущие хиты <input name="hp" /></label>
-                <label>Максимум хитов <input name="max_hp" /></label>
-                <label>Временные хиты <input name="temp_hp" /></label>
+                <div class="colspan">
+                    <label style="flex: 2">Временные <input name="temp_hp" size="1" /></label>
+                    <label style="flex: 1">Максимум <input name="max_hp" size="1" /></label>
+                </div>
             </div>
             <div class="box box-lines">
                 <label>Кости хитов <input name="hit_dice" /></label>
                 <label>Спасброски от смерти <input name="death_saves" /></label>
             </div>
             <div class="box box-lines">
-                <label>Класс брони <input name="ac" /></label>
-            </div>
-            <div class="box box-lines">
-                <label>Инициатива <input name="initiative" /></label>
-                <label>Скорость <input name="speed" /></label>
-                <label>Размер <input name="size" /></label>
-                <label>Пассивная внимательность <input name="passive_perception" /></label>
+                <div class="colspan">
+                    <label style="flex: 1">Класс брони <input name="ac" size="1" /></label>
+                    <label style="flex: 1">Инициатива <input name="initiative" size="1" /></label>
+                    <label style="flex: 1">Скорость <input name="speed" size="1" /></label>
+                </div>
+                <div class="colspan">
+                    <label style="flex: 1">Размер <input name="size" size="1" /></label>
+                    <label style="flex: 1">Пассивная внимательность <input name="passive_perception" size="1" /></label>
+                </div>
             </div>
             <div class="box box-textarea" style="flex: 1">
                 <label>Оружие и атаки <textarea name="attacks"></textarea></label>
