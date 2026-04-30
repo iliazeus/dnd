@@ -1,0 +1,16 @@
+@media (width < 148mm) {
+    body {
+        width: unset;
+        height: unset;
+        padding: 5px;
+    }
+
+    #main {
+        display: block;
+    }
+
+    .label-textarea textarea,
+    .box:last-child textarea {
+        resize: vertical;
+    }
+}
