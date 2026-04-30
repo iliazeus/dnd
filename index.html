@@ -12,17 +12,6 @@
             background: #999;
         }
 
-        @page {
-            page-orientation: upright;
-            margin: 0;
-        }
-
-        @media print {
-            :root {
-                background: unset;
-            }
-        }
-
         body {
             background: white;
             width: 210mm;
@@ -135,6 +124,26 @@
             .label-textarea textarea,
             .box:last-child textarea {
                 resize: vertical;
+            }
+        }
+
+        @media print {
+            @page {
+                page-orientation: upright;
+                margin: 0;
+            }
+
+            :root {
+                background: unset;
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 3mm;
             }
         }
     </style>
