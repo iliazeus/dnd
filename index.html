@@ -12,11 +12,34 @@
             background: #999;
         }
 
+        @media print {
+            :root {
+                background: unset;
+            }
+        }
+
         body {
             background: white;
             width: 210mm;
             height: 297mm;
             margin: 0 auto;
+            padding: 5mm;
+            box-sizing: border-box;
+        }
+
+        #main {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: stretch;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .column {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: stretch;
+            justify-content: stretch;
         }
 
         label {
@@ -28,6 +51,7 @@
             border: none;
             border-bottom: solid 1pt #999;
             font-size: 14pt;
+            width: 100%;
         }
 
         small {
@@ -73,14 +97,38 @@
             display: flex;
             flex-flow: column nowrap;
             width: 98%;
+            height: 100%;
         }
 
         .box-textarea textarea {
             resize: vertical;
             width: 100%;
+            height: 100%;
+            min-height: 120px;
             border: none;
             background: repeat url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200pt' height='15pt' viewBox='0 0 200 15'><line x1='0' y1='14' x2='200' y2='14' stroke='%23999' stroke-width='1' /></svg>");
             line-height: 15pt;
+        }
+
+        .box-textarea:last-child textarea {
+            resize: none;
+        }
+
+        @media (width < 148mm) {
+            body {
+                width: unset;
+                height: unset;
+                padding: 5px;
+            }
+
+            #main {
+                display: block;
+            }
+
+            .box-textarea textarea,
+            .box-textarea:last-child textarea {
+                resize: vertical;
+            }
         }
     </style>
 
@@ -179,8 +227,8 @@
 </head>
 
 <body>
-    <form autocomplete="off" style="display: flex; flex-flow: row nowrap; justify-content: center; padding: 5px auto">
-        <div style="display: flex; flex-flow: column nowrap; justify-content: stretch">
+    <form id="main" autocomplete="off">
+        <div class="column">
             <div class="box box-lines">
                 <label>Имя <input name="name" /></label>
                 <label>Происхождение <input name="background" /></label>
@@ -208,12 +256,12 @@
                 <label><input name="persuasion" /> Убеждение <small>(Cha)</small></label>
                 <label><input name="animal_handling" /> Уход за животными <small>(Wis)</small></label>
             </div>
-            <div class="box box-textarea">
-                <label>Владения <textarea name="proficiencies" style="height: 296px"></textarea></label>
+            <div class="box box-textarea" style="flex: 1">
+                <label>Владения <textarea name="proficiencies"></textarea></label>
             </div>
         </div>
 
-        <div style="display: flex; flex-flow: column nowrap">
+        <div class="column">
             <div class="box box-lines">
                 <label>Уровень <input name="level" /></label>
                 <label>Опыт <input name="xp" /></label>
@@ -227,12 +275,12 @@
                 <label>Мудрость (Wis) <input name="wis" /></label>
                 <label>Харизма (Cha) <input name="cha" /></label>
             </div>
-            <div class="box box-textarea">
-                <label>Черты и умения <textarea name="feats" style="height: 629px"></textarea></label>
+            <div class="box box-textarea" style="flex: 1">
+                <label>Черты и умения <textarea name="feats"></textarea></label>
             </div>
         </div>
 
-        <div style="display: flex; flex-flow: column nowrap">
+        <div class="column">
             <div class="box box-lines">
                 <label>Текущие хиты <input name="hp" /></label>
                 <label>Максимум хитов <input name="max_hp" /></label>
@@ -251,11 +299,11 @@
                 <label>Размер <input name="size" /></label>
                 <label>Пассивная внимательность <input name="passive_perception" /></label>
             </div>
-            <div class="box box-textarea">
-                <label>Оружие и атаки <textarea name="attacks" style="height: 198px"></textarea></label>
+            <div class="box box-textarea" style="flex: 1">
+                <label>Оружие и атаки <textarea name="attacks"></textarea></label>
             </div>
-            <div class="box box-textarea">
-                <label>Снаряжение <textarea name="equipment" style="height: 296px"></textarea></label>
+            <div class="box box-textarea" style="flex: 3">
+                <label>Снаряжение <textarea name="equipment"></textarea></label>
             </div>
         </div>
     </form>
