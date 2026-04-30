@@ -94,16 +94,15 @@
                 data = Uint8Array.fromBase64(data, { alphabet: "base64url" });
                 data = new Response(data).body;
                 data = data.pipeThrough(new DecompressionStream("deflate-raw"));
-                data = await new Response(data).text();
-                data = new URLSearchParams(data);
-                for (let [k, v] of data) {
+                data = await new Response(data).json();
+                for (let [k, v] of Object.entries(data)) {
                     form.elements[k].value = v;
                 }
             }
 
             form.addEventListener("change", async () => {
-                let data = new URLSearchParams(new FormData(form)).toString();
-                data = new Response(data).body;
+                let data = Object.fromEntries(new FormData(form));
+                data = new Response(JSON.stringify(data)).body;
                 data = data.pipeThrough(new CompressionStream("deflate-raw"));
                 data = await new Response(data).bytes();
                 data = data.toBase64({ alphabet: "base64url" });
