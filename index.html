@@ -215,7 +215,10 @@
             }
 
             form.addEventListener("change", async () => {
-                let data = schema.map((name) => form.elements[name]?.value ?? "");
+                schema.forEach((name, i) => {
+                    data[i] = form.elements[name]?.value ?? "";
+                });
+
                 data = new Response(JSON.stringify(data)).body;
                 data = data.pipeThrough(new CompressionStream("deflate-raw"));
                 data = await new Response(data).bytes();
