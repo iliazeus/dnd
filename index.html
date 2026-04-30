@@ -35,6 +35,10 @@
             height: 100%;
         }
 
+        #main > * {
+            flex: 1;
+        }
+
         .column {
             display: flex;
             flex-flow: column nowrap;
@@ -71,14 +75,11 @@
             padding: 3px;
             border: solid 1px black;
             border-radius: 3px;
-        }
-
-        .box-lines {
             display: flex;
             flex-flow: column nowrap;
         }
 
-        .box-lines label {
+        label.under {
             display: flex;
             flex-flow: column-reverse nowrap;
             font-size: 10pt;
@@ -86,29 +87,22 @@
             margin: 0 auto;
         }
 
-        .box-skills {
-            display: flex;
-            flex-flow: column nowrap;
+        label.beside {
             font-size: 12pt;
         }
 
-        .box-skills input {
+        label.beside input {
             width: 50px;
         }
 
-        .box-textarea {
-            display: flex;
-            flex-flow: column nowrap;
-        }
-
-        .box-textarea>* {
+        label.textarea {
             display: flex;
             flex-flow: column nowrap;
             width: 98%;
             height: 100%;
         }
 
-        .box-textarea textarea {
+        label.textarea textarea {
             resize: vertical;
             width: 100%;
             height: 100%;
@@ -118,7 +112,7 @@
             line-height: 15pt;
         }
 
-        .box-textarea:last-child textarea {
+        .box:last-child textarea {
             resize: none;
         }
 
@@ -133,8 +127,8 @@
                 display: block;
             }
 
-            .box-textarea textarea,
-            .box-textarea:last-child textarea {
+            .label-textarea textarea,
+            .box:last-child textarea {
                 resize: vertical;
             }
         }
@@ -237,89 +231,90 @@
 <body>
     <form id="main" autocomplete="off">
         <div class="column">
-            <div class="box box-lines">
-                <label>Имя <input name="name" /></label>
-                <label>Происхождение <input name="background" /></label>
-                <label>Вид <input name="species" /></label>
-                <label>Класс <input name="class" /></label>
-                <label>Подкласс <input name="subclass" /></label>
+            <div class="box">
+                <label class="under">Имя <input name="name" /></label>
+                <label class="under">Происхождение <input name="background" /></label>
+                <label class="under">Вид <input name="species" /></label>
+                <label class="under">Класс <input name="class" /></label>
+                <label class="under">Подкласс <input name="subclass" /></label>
             </div>
-            <div class="box box-skills">
-                <label><input name="proficiency_bonus" /> Бонус мастерства</label>
+            <div class="box">
+                <label class="beside"><input name="proficiency_bonus" /> Бонус мастерства</label>
             </div>
-            <div class="box box-skills">
-                <label><input name="acrobatics" /> Акробатика <small>(Dex)</small></label>
-                <label><input name="athletics" /> Атлетика <small>(Str)</small></label>
-                <label><input name="perception" /> Внимательность <small>(Wis)</small></label>
-                <label><input name="survival" /> Выживание <small>(Wis)</small></label>
-                <label><input name="performance" /> Выступление <small>(Cha)</small></label>
-                <label><input name="intimidation" /> Запугивание <small>(Cha)</small></label>
-                <label><input name="history" /> История <small>(Int)</small></label>
-                <label><input name="sleight_of_hand" /> Ловкость рук <small>(Dex)</small></label>
-                <label><input name="arcana" /> Магия <small>(Int)</small></label>
-                <label><input name="medicine" /> Медицина <small>(Wis)</small></label>
-                <label><input name="deception" /> Обман <small>(Cha)</small></label>
-                <label><input name="nature" /> Природа <small>(Int)</small></label>
-                <label><input name="insight" /> Проницательность <small>(Wis)</small></label>
-                <label><input name="investigation" /> Расследование <small>(Int)</small></label>
-                <label><input name="religion" /> Религия <small>(Int)</small></label>
-                <label><input name="stealth" /> Скрытность <small>(Dex)</small></label>
-                <label><input name="persuasion" /> Убеждение <small>(Cha)</small></label>
-                <label><input name="animal_handling" /> Уход за животными <small>(Wis)</small></label>
+            <div class="box">
+                <label class="beside"><input name="acrobatics" /> Акробатика <small>(Dex)</small></label>
+                <label class="beside"><input name="athletics" /> Атлетика <small>(Str)</small></label>
+                <label class="beside"><input name="perception" /> Внимательность <small>(Wis)</small></label>
+                <label class="beside"><input name="survival" /> Выживание <small>(Wis)</small></label>
+                <label class="beside"><input name="performance" /> Выступление <small>(Cha)</small></label>
+                <label class="beside"><input name="intimidation" /> Запугивание <small>(Cha)</small></label>
+                <label class="beside"><input name="history" /> История <small>(Int)</small></label>
+                <label class="beside"><input name="sleight_of_hand" /> Ловкость рук <small>(Dex)</small></label>
+                <label class="beside"><input name="arcana" /> Магия <small>(Int)</small></label>
+                <label class="beside"><input name="medicine" /> Медицина <small>(Wis)</small></label>
+                <label class="beside"><input name="deception" /> Обман <small>(Cha)</small></label>
+                <label class="beside"><input name="nature" /> Природа <small>(Int)</small></label>
+                <label class="beside"><input name="insight" /> Проницательность <small>(Wis)</small></label>
+                <label class="beside"><input name="investigation" /> Расследование <small>(Int)</small></label>
+                <label class="beside"><input name="religion" /> Религия <small>(Int)</small></label>
+                <label class="beside"><input name="stealth" /> Скрытность <small>(Dex)</small></label>
+                <label class="beside"><input name="persuasion" /> Убеждение <small>(Cha)</small></label>
+                <label class="beside"><input name="animal_handling" /> Уход за животными <small>(Wis)</small></label>
             </div>
-            <div class="box box-textarea" style="flex: 1">
-                <label>Владения <textarea name="proficiencies"></textarea></label>
-            </div>
-        </div>
-
-        <div class="column">
-            <div class="box box-lines">
-                <div class="colspan">
-                    <label style="flex: 1">Уровень <input name="level" size="1" /></label>
-                    <label style="flex: 2">Опыт <input name="xp" size="1" /></label>
-                </div>
-            </div>
-            <div class="box box-lines">
-                <label>Сила (Str) <input name="str" /></label>
-                <label>Ловкость (Dex) <input name="dex" /></label>
-                <label>Телосложение (Con) <input name="con" /></label>
-                <label>Интеллект (Int) <input name="int" /></label>
-                <label>Мудрость (Wis) <input name="wis" /></label>
-                <label>Харизма (Cha) <input name="cha" /></label>
-            </div>
-            <div class="box box-textarea" style="flex: 1">
-                <label>Черты и умения <textarea name="feats"></textarea></label>
+            <div class="box" style="flex: 1">
+                <label class="textarea">Владения <textarea name="proficiencies"></textarea></label>
             </div>
         </div>
 
         <div class="column">
-            <div class="box box-lines">
-                <label>Текущие хиты <input name="hp" /></label>
+            <div class="box">
                 <div class="colspan">
-                    <label style="flex: 2">Временные <input name="temp_hp" size="1" /></label>
-                    <label style="flex: 1">Максимум <input name="max_hp" size="1" /></label>
+                    <label class="under" style="flex: 1">Уровень <input name="level" size="1" /></label>
+                    <label class="under" style="flex: 2">Опыт <input name="xp" size="1" /></label>
                 </div>
             </div>
-            <div class="box box-lines">
-                <label>Кости хитов <input name="hit_dice" /></label>
-                <label>Спасброски от смерти <input name="death_saves" /></label>
+            <div class="box">
+                <label class="under">Сила (Str) <input name="str" /></label>
+                <label class="under">Ловкость (Dex) <input name="dex" /></label>
+                <label class="under">Телосложение (Con) <input name="con" /></label>
+                <label class="under">Интеллект (Int) <input name="int" /></label>
+                <label class="under">Мудрость (Wis) <input name="wis" /></label>
+                <label class="under">Харизма (Cha) <input name="cha" /></label>
             </div>
-            <div class="box box-lines">
+            <div class="box" style="flex: 1">
+                <label class="textarea">Черты и умения <textarea name="feats"></textarea></label>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="box">
+                <label class="under">Текущие хиты <input name="hp" /></label>
                 <div class="colspan">
-                    <label style="flex: 1">Класс брони <input name="ac" size="1" /></label>
-                    <label style="flex: 1">Инициатива <input name="initiative" size="1" /></label>
-                    <label style="flex: 1">Скорость <input name="speed" size="1" /></label>
+                    <label class="under" style="flex: 2">Временные <input name="temp_hp" size="1" /></label>
+                    <label class="under" style="flex: 1">Максимум <input name="max_hp" size="1" /></label>
+                </div>
+            </div>
+            <div class="box">
+                <label class="under">Кости хитов <input name="hit_dice" /></label>
+                <label class="under">Спасброски от смерти <input name="death_saves" /></label>
+            </div>
+            <div class="box">
+                <div class="colspan">
+                    <label class="under" style="flex: 1">Класс брони <input name="ac" size="1" /></label>
+                    <label class="under" style="flex: 1">Инициатива <input name="initiative" size="1" /></label>
+                    <label class="under" style="flex: 1">Скорость <input name="speed" size="1" /></label>
                 </div>
                 <div class="colspan">
-                    <label style="flex: 1">Размер <input name="size" size="1" /></label>
-                    <label style="flex: 1">Пассивная внимательность <input name="passive_perception" size="1" /></label>
+                    <label class="under" style="flex: 1">Размер <input name="size" size="1" /></label>
+                    <label class="under" style="flex: 1">Пассивная внимательность <input name="passive_perception"
+                            size="1" /></label>
                 </div>
             </div>
-            <div class="box box-textarea" style="flex: 1">
-                <label>Оружие и атаки <textarea name="attacks"></textarea></label>
+            <div class="box" style="flex: 1">
+                <label class="textarea">Оружие и атаки <textarea name="attacks"></textarea></label>
             </div>
-            <div class="box box-textarea" style="flex: 3">
-                <label>Снаряжение <textarea name="equipment"></textarea></label>
+            <div class="box" style="flex: 3">
+                <label class="textarea">Снаряжение <textarea name="equipment"></textarea></label>
             </div>
         </div>
     </form>
