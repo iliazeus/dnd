@@ -89,19 +89,82 @@
             let url = new URL(window.location);
             let form = document.querySelector("form");
 
+            let schema = [
+                "name",
+                "background",
+                "species",
+                "class",
+                "subclass",
+                "acrobatics",
+                "athletics",
+                "perception",
+                "survival",
+                "performance",
+                "intimidation",
+                "history",
+                "sleight_of_hand",
+                "arcana",
+                "medicine",
+                "deception",
+                "nature",
+                "insight",
+                "investigation",
+                "religion",
+                "stealth",
+                "persuasion",
+                "animal_handling",
+                "proficiencies",
+                "level",
+                "xp",
+                "proficiency_bonus",
+                "str",
+                "dex",
+                "con",
+                "int",
+                "wis",
+                "cha",
+                "feats",
+                "hp",
+                "max_hp",
+                "temp_hp",
+                "hit_dice",
+                "death_saves",
+                "ac",
+                "initiative",
+                "speed",
+                "size",
+                "passive_perception",
+                "attacks",
+                "equipment",
+            ];
+
+            let schemaChanged = false;
+            for (let i = 0; i < form.elements.length; i++) {
+                if (!schema.includes(form.elements[i].name)) {
+                    schemaChanged = true;
+                    console.log("new field:", form.elements[i].name);
+                }
+            }
+            if (schemaChanged) {
+                window.alert("update the schema!");
+                return;
+            }
+
             let data = url.searchParams.get("d");
             if (data != null) {
                 data = Uint8Array.fromBase64(data, { alphabet: "base64url" });
                 data = new Response(data).body;
                 data = data.pipeThrough(new DecompressionStream("deflate-raw"));
                 data = await new Response(data).json();
-                for (let [k, v] of Object.entries(data)) {
-                    form.elements[k].value = v;
-                }
+                data.forEach((val, i) => {
+                    if (form.elements[schema[i]]) {
+                        form.elements[schema[i]].value = val;
+                    }
+                });
             }
 
             form.addEventListener("change", async () => {
-                let data = Object.fromEntries(new FormData(form));
+                let data = schema.map((name) => form.elements[name]?.value ?? "");
                 data = new Response(JSON.stringify(data)).body;
                 data = data.pipeThrough(new CompressionStream("deflate-raw"));
                 data = await new Response(data).bytes();
